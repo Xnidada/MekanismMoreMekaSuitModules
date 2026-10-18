@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import mekanism.api.gear.IModule;
 import mekanism.common.content.gear.IModuleContainerItem;
 import moremekasuitmodules.common.MekaSuitMoreModules;
+import moremekasuitmodules.common.config.MoreModulesConfig;
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.OpticalCamouflageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -29,9 +30,6 @@ import java.util.Set;
 
 @Mixin(EntityLivingBase.class)
 public abstract class MixinEntityLivingBase extends Entity {
-
-    @Unique
-    private static final int PERCENTAGE_DAMAGE_LIMIT_MAX_MODULES = 40;
 
     @Unique
     private static final float PERCENTAGE_DAMAGE_LIMIT_MAX_DAMAGE = 1.0F;
@@ -134,10 +132,11 @@ public abstract class MixinEntityLivingBase extends Entity {
 
     @Unique
     private float getLimitedPercentageDamage(float originalDamage, int moduleCount) {
-        if (moduleCount >= PERCENTAGE_DAMAGE_LIMIT_MAX_MODULES) {
+        int maxModules = MoreModulesConfig.current().config.maxModuleStackSize("percentage_damage_limit_unit") * PERCENTAGE_DAMAGE_LIMIT_ARMOR_SLOTS.length;
+        if (moduleCount >= maxModules) {
             return Math.min(originalDamage, PERCENTAGE_DAMAGE_LIMIT_MAX_DAMAGE);
         }
-        float damageMultiplier = 1.0F - moduleCount / (float) PERCENTAGE_DAMAGE_LIMIT_MAX_MODULES;
+        float damageMultiplier = 1.0F - moduleCount / (float) maxModules;
         return originalDamage * damageMultiplier;
     }
 

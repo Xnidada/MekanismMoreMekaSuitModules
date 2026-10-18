@@ -9,6 +9,7 @@ import mekanism.api.gear.config.ModuleConfigItemCreator;
 import mekanism.api.gear.config.ModuleEnumData;
 import mekanism.api.text.IHasTextComponent;
 import mekanism.api.text.TextComponentGroup;
+import moremekasuitmodules.common.config.MoreModulesConfig;
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.gmut.MoreMekaSuitModulesLang;
 import net.minecraft.util.text.ITextComponent;
 
@@ -16,16 +17,20 @@ import net.minecraft.util.text.ITextComponent;
 public class ModuleImpactWaveUnit implements ICustomModule<ModuleImpactWaveUnit> {
 
     public static final int DEFAULT_WAVE_COLOR = 0x88B8F7FF;
-    public static final int MAX_MODULES = 4;
+    public static final int DEFAULT_MAX_MODULES = 4;
 
     private IModuleConfigItem<TriggerHeight> triggerHeight;
     private IModuleConfigItem<ImpactRadius> radius;
     private IModuleConfigItem<DamageScale> damageScale;
     private IModuleConfigItem<Integer> waveColor;
 
+    public static int getMaxModules() {
+        return MoreModulesConfig.current().config.maxModuleStackSize("impact_wave_unit");
+    }
+
     @Override
     public void init(IModule<ModuleImpactWaveUnit> module, ModuleConfigItemCreator configItemCreator) {
-        int unlockedLevels = Math.max(1, Math.min(module.getInstalledCount(), MAX_MODULES));
+        int unlockedLevels = Math.max(1, Math.min(module.getInstalledCount(), Math.min(getMaxModules(), TriggerHeight.values().length)));
         triggerHeight = configItemCreator.createConfigItem("trigger_height", MoreMekaSuitModulesLang.MODULE_IMPACT_TRIGGER_HEIGHT,
                 new ModuleEnumData<>(TriggerHeight.LOW, unlockedLevels));
         radius = configItemCreator.createConfigItem("radius", MoreMekaSuitModulesLang.MODULE_IMPACT_RADIUS,

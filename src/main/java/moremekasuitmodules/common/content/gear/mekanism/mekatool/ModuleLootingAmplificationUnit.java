@@ -18,7 +18,7 @@ public class ModuleLootingAmplificationUnit implements ICustomModule<ModuleLooti
     private IModuleConfigItem<LootingLevel> lootingLevel;
 
     public static int getMaxModules() {
-        return MoreModulesConfig.current().config.mekaToolLootingAmplificationMaxModules.val();
+        return MoreModulesConfig.current().config.maxModuleStackSize("looting_amplification_unit");
     }
 
     @Override

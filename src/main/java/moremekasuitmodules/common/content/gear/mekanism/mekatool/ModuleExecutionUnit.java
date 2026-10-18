@@ -8,15 +8,20 @@ import mekanism.api.gear.config.ModuleConfigItemCreator;
 import mekanism.api.gear.config.ModuleEnumData;
 import mekanism.api.text.IHasTextComponent;
 import mekanism.api.text.TextComponentGroup;
+import moremekasuitmodules.common.config.MoreModulesConfig;
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.gmut.MoreMekaSuitModulesLang;
 import net.minecraft.util.text.ITextComponent;
 
 @ParametersAreNotNullByDefault
 public class ModuleExecutionUnit implements ICustomModule<ModuleExecutionUnit> {
 
-    public static final int MAX_MODULES = 10;
+    public static final int DEFAULT_MAX_MODULES = 10;
 
     private IModuleConfigItem<ExecutionLevel> executionLevel;
+
+    public static int getMaxModules() {
+        return MoreModulesConfig.current().config.maxModuleStackSize("execution_unit");
+    }
 
     @Override
     public void init(IModule<ModuleExecutionUnit> module, ModuleConfigItemCreator configItemCreator) {
@@ -26,7 +31,7 @@ public class ModuleExecutionUnit implements ICustomModule<ModuleExecutionUnit> {
     }
 
     public float getThreshold(int installedCount) {
-        int effectiveModules = Math.min(Math.min(installedCount, MAX_MODULES), executionLevel.get().getModules());
+        int effectiveModules = Math.min(Math.min(installedCount, getMaxModules()), executionLevel.get().getModules());
         return effectiveModules * 0.02F;
     }
 

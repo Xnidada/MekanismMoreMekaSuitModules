@@ -8,16 +8,21 @@ import mekanism.api.gear.config.ModuleConfigItemCreator;
 import mekanism.api.gear.config.ModuleEnumData;
 import mekanism.api.text.IHasTextComponent;
 import mekanism.api.text.TextComponentGroup;
+import moremekasuitmodules.common.config.MoreModulesConfig;
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.gmut.MoreMekaSuitModulesLang;
 import net.minecraft.util.text.ITextComponent;
 
 @ParametersAreNotNullByDefault
 public class ModuleCounterattackUnit implements ICustomModule<ModuleCounterattackUnit> {
 
-    public static final int MAX_MODULES_PER_ARMOR = 10;
+    public static final int DEFAULT_MAX_MODULES_PER_ARMOR = 10;
     public static final float DAMAGE_DIVISOR = 10.0F;
 
     private IModuleConfigItem<CounterLevel> counterLevel;
+
+    public static int getMaxModulesPerArmor() {
+        return MoreModulesConfig.current().config.maxModuleStackSize("counterattack_unit");
+    }
 
     @Override
     public void init(IModule<ModuleCounterattackUnit> module, ModuleConfigItemCreator configItemCreator) {
@@ -27,7 +32,7 @@ public class ModuleCounterattackUnit implements ICustomModule<ModuleCounterattac
     }
 
     public int getEffectiveCount(int installedCount) {
-        return Math.min(Math.min(installedCount, MAX_MODULES_PER_ARMOR), counterLevel.get().getMaxModules());
+        return Math.min(Math.min(installedCount, getMaxModulesPerArmor()), counterLevel.get().getMaxModules());
     }
 
     public enum CounterLevel implements IHasTextComponent {

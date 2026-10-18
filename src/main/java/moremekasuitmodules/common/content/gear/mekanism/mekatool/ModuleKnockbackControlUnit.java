@@ -8,15 +8,20 @@ import mekanism.api.gear.config.ModuleConfigItemCreator;
 import mekanism.api.gear.config.ModuleEnumData;
 import mekanism.api.text.IHasTextComponent;
 import mekanism.api.text.TextComponentGroup;
+import moremekasuitmodules.common.config.MoreModulesConfig;
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.gmut.MoreMekaSuitModulesLang;
 import net.minecraft.util.text.ITextComponent;
 
 @ParametersAreNotNullByDefault
 public class ModuleKnockbackControlUnit implements ICustomModule<ModuleKnockbackControlUnit> {
 
-    public static final int MAX_MODULES = 10;
+    public static final int DEFAULT_MAX_MODULES = 10;
 
     private IModuleConfigItem<KnockbackStrength> knockbackStrength;
+
+    public static int getMaxModules() {
+        return MoreModulesConfig.current().config.maxModuleStackSize("knockback_control_unit");
+    }
 
     @Override
     public void init(IModule<ModuleKnockbackControlUnit> module, ModuleConfigItemCreator configItemCreator) {
@@ -26,7 +31,7 @@ public class ModuleKnockbackControlUnit implements ICustomModule<ModuleKnockback
     }
 
     public float getEffectiveStrength(int installedCount) {
-        int effectiveModules = Math.min(Math.min(installedCount, MAX_MODULES), knockbackStrength.get().getModules());
+        int effectiveModules = Math.min(Math.min(installedCount, getMaxModules()), knockbackStrength.get().getModules());
         return effectiveModules * 0.2F;
     }
 

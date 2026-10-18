@@ -51,7 +51,8 @@ public class CounterattackHandler {
             return;
         }
 
-        // 每 10 个有效反击单元返还 100% 入场伤害；四件全部装满时为 40 / 10 = 4 倍。
+        // 反击伤害 = 入场伤害 × 四件护甲有效单元总数 ÷ 10。
+        // Counter damage = incoming damage × effective units on four armor pieces ÷ 10.
         float counterDamage = event.getAmount() * counterModules / ModuleCounterattackUnit.DAMAGE_DIVISOR;
         if (counterDamage > 0.0F) {
             if (attacker.attackEntityFrom(COUNTERATTACKDAMAGE.setTrueSource(defender), counterDamage)) {

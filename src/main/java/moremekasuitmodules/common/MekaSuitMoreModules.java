@@ -19,101 +19,106 @@ import moremekasuitmodules.common.content.gear.mekanism.mekatool.ModuleLootingAm
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.*;
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.gmut.ModuleGravitationalModulatingAdditionalUnit;
 import moremekasuitmodules.common.integration.SpaceEnvironmentCompat;
+import moremekasuitmodules.common.config.MoreModulesConfig;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fml.common.Loader;
 
 public class MekaSuitMoreModules {
 
+    private static int maxStack(String moduleId) {
+        return MoreModulesConfig.local().config.maxModuleStackSize(moduleId);
+    }
+
     //紧急救援（消耗该单元来进行复活玩家）
-    public static final ModuleData<?> EMERGENCY_RESCUE_UNIT = ModuleHelper.registerMarker("emergency_rescue_unit", builder -> builder.maxStackSize(10).rarity(EnumRarity.EPIC));
+    public static final ModuleData<?> EMERGENCY_RESCUE_UNIT = ModuleHelper.registerMarker("emergency_rescue_unit", builder -> builder.maxStackSize(maxStack("emergency_rescue_unit")).rarity(EnumRarity.EPIC));
     //先进救援（不消耗该单元来进行复活玩家，且如果安装并启用了紧急救援，则不消耗紧急救援）
-    public static final ModuleData<?> ADVANCED_INTERCEPTION_SYSTEM_UNIT = ModuleHelper.registerMarker("advanced_interception_system_unit", builder -> builder.rarity(EnumRarity.EPIC));
+    public static final ModuleData<?> ADVANCED_INTERCEPTION_SYSTEM_UNIT = ModuleHelper.registerMarker("advanced_interception_system_unit", builder -> builder.maxStackSize(maxStack("advanced_interception_system_unit")).rarity(EnumRarity.EPIC));
     //密封单元 //GC、AR或者Ad Astra Reborn （允许在太空中呼吸）
-    public static final ModuleData<?> SEAL_UNIT = ModuleHelper.registerMarker("seal_unit", builder -> builder.maxStackSize(1).canEnable(!SpaceEnvironmentCompat.isSpaceEnvironmentLoaded()).notEnabled("tooltip.install.space"));
-    public static final ModuleData<ModuleOxygenSupplyUnit> OXYGEN_SUPPLY_UNIT = ModuleHelper.register("oxygen_supply_unit", ModuleOxygenSupplyUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.UNCOMMON));
+    public static final ModuleData<?> SEAL_UNIT = ModuleHelper.registerMarker("seal_unit", builder -> builder.maxStackSize(maxStack("seal_unit")).canEnable(!SpaceEnvironmentCompat.isSpaceEnvironmentLoaded()).notEnabled("tooltip.install.space"));
+    public static final ModuleData<ModuleOxygenSupplyUnit> OXYGEN_SUPPLY_UNIT = ModuleHelper.register("oxygen_supply_unit", ModuleOxygenSupplyUnit::new, builder -> builder.maxStackSize(maxStack("oxygen_supply_unit")).rarity(EnumRarity.UNCOMMON));
     //热防护单元 //GC （允许在更热的星球不会导致过热）
-    public static final ModuleData<ModuleThermalProtectionUnit> THERMAL_PROTECTION_UNIT = ModuleHelper.register("thermal_protection_unit", ModuleThermalProtectionUnit::new, builder -> builder.maxStackSize(1).canEnable(!Loader.isModLoaded(MekanismHooks.GC_MOD_ID)).notEnabled("tooltip.install.gc"));
+    public static final ModuleData<ModuleThermalProtectionUnit> THERMAL_PROTECTION_UNIT = ModuleHelper.register("thermal_protection_unit", ModuleThermalProtectionUnit::new, builder -> builder.maxStackSize(maxStack("thermal_protection_unit")).canEnable(!Loader.isModLoaded(MekanismHooks.GC_MOD_ID)).notEnabled("tooltip.install.gc"));
     //绝缘单元 IE 和 GTCEU（将电流导入大地，防止导致受伤）
-    public static final ModuleData<?> INSULATED_UNIT = ModuleHelper.registerMarker("insulated_unit", builder -> builder.canEnable(!Loader.isModLoaded(MekanismHooks.GTCEU_MOD_ID) && !Loader.isModLoaded("immersiveengineering")).notEnabled("tooltip.install.ie.or.gtceu"));
+    public static final ModuleData<?> INSULATED_UNIT = ModuleHelper.registerMarker("insulated_unit", builder -> builder.maxStackSize(maxStack("insulated_unit")).canEnable(!Loader.isModLoaded(MekanismHooks.GTCEU_MOD_ID) && !Loader.isModLoaded("immersiveengineering")).notEnabled("tooltip.install.ie.or.gtceu"));
     //防蜂单元 林业（散发特殊的信息素，让蜜蜂对你视而不见）(需要mixin)
-    public static final ModuleData<?> BEE_CONTROL_UNIT = ModuleHelper.registerMarker("bee_control_unit", builder -> builder.canEnable(!Loader.isModLoaded("forestry")).notEnabled("tooltip.install.fr"));
+    public static final ModuleData<?> BEE_CONTROL_UNIT = ModuleHelper.registerMarker("bee_control_unit", builder -> builder.maxStackSize(maxStack("bee_control_unit")).canEnable(!Loader.isModLoaded("forestry")).notEnabled("tooltip.install.fr"));
     //扭曲清除基础单元 神秘（通过特殊的方法移除身上的临时扭曲值）
-    public static final ModuleData<ModuleWarpClearBaseUnit> WARP_CLEAR_BASE_UNIT = ModuleHelper.register("warp_clear_base_unit", ModuleWarpClearBaseUnit::new, builder -> builder.rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6"));
+    public static final ModuleData<ModuleWarpClearBaseUnit> WARP_CLEAR_BASE_UNIT = ModuleHelper.register("warp_clear_base_unit", ModuleWarpClearBaseUnit::new, builder -> builder.maxStackSize(maxStack("warp_clear_base_unit")).rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6"));
     //扭曲清除高级单元 神秘（通过特殊的方法移除身上的普通扭曲值）
-    public static final ModuleData<ModuleWarpClearAdvancedUnit> WARP_CLEAR_ADVANCED_UNIT = ModuleHelper.register("warp_clear_advanced_unit", ModuleWarpClearAdvancedUnit::new, builder -> builder.rarity(EnumRarity.RARE).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6"));
+    public static final ModuleData<ModuleWarpClearAdvancedUnit> WARP_CLEAR_ADVANCED_UNIT = ModuleHelper.register("warp_clear_advanced_unit", ModuleWarpClearAdvancedUnit::new, builder -> builder.maxStackSize(maxStack("warp_clear_advanced_unit")).rarity(EnumRarity.RARE).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6"));
     //扭曲清除终极单元 神秘（通过特殊的方法移除身上的永久扭曲值）【创造物品】
-    public static final ModuleData<ModuleWarpClearUltimateUnit> WARP_CLEAR_ULTIMATE_UNIT = ModuleHelper.register("warp_clear_ultimate_unit", ModuleWarpClearUltimateUnit::new, builder -> builder.rarity(EnumRarity.EPIC).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6"));
+    public static final ModuleData<ModuleWarpClearUltimateUnit> WARP_CLEAR_ULTIMATE_UNIT = ModuleHelper.register("warp_clear_ultimate_unit", ModuleWarpClearUltimateUnit::new, builder -> builder.maxStackSize(maxStack("warp_clear_ultimate_unit")).rarity(EnumRarity.EPIC).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6"));
     //魔力优化单元 神秘（使用特殊的方法，减少魔力Vis的使用）[最大25个](需要mixin)
-    public static final ModuleData<?> MAGIC_OPTIMIZATION_UNIT = ModuleHelper.registerMarker("magic_optimization_unit", builder -> builder.maxStackSize(25).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6"));
+    public static final ModuleData<?> MAGIC_OPTIMIZATION_UNIT = ModuleHelper.registerMarker("magic_optimization_unit", builder -> builder.maxStackSize(maxStack("magic_optimization_unit")).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6"));
     //揭示护目单元 神秘 （同揭示之护目镜）(需要mixin)
-    public static final ModuleData<?> GOGGLES_OF_REVEALING_UNIT = ModuleHelper.registerMarker("goggles_of_revealing_unit", builder -> builder.rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6").disabledByDefault());
+    public static final ModuleData<?> GOGGLES_OF_REVEALING_UNIT = ModuleHelper.registerMarker("goggles_of_revealing_unit", builder -> builder.maxStackSize(maxStack("goggles_of_revealing_unit")).rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("thaumcraft")).notEnabled("tooltip.install.tc6").disabledByDefault());
     //智能温度调节单元 意志坚定(稳定身体的温度，一直保持最佳温度)
-    public static final ModuleData<ModuleIntelligentTemperatureRegulationUnit> INTELLIGENT_TEMPERATURE_REGULATION_UNIT = ModuleHelper.register("intelligent_temperature_regulation_unit", ModuleIntelligentTemperatureRegulationUnit::new, builder -> builder.rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("toughasnails")).notEnabled("tooltip.install.tna"));
+    public static final ModuleData<ModuleIntelligentTemperatureRegulationUnit> INTELLIGENT_TEMPERATURE_REGULATION_UNIT = ModuleHelper.register("intelligent_temperature_regulation_unit", ModuleIntelligentTemperatureRegulationUnit::new, builder -> builder.maxStackSize(maxStack("intelligent_temperature_regulation_unit")).rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("toughasnails")).notEnabled("tooltip.install.tna"));
     //自动供液单元 意志坚定(如果口渴了，自动喝水)
-    public static final ModuleData<ModuleAutomaticLiquidSupplyUnit> AUTOMATIC_LIQUID_SUPPLY_UNIT = ModuleHelper.register("automatic_liquid_supply_unit", ModuleAutomaticLiquidSupplyUnit::new, builder -> builder.rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("toughasnails")).notEnabled("tooltip.install.tna"));
+    public static final ModuleData<ModuleAutomaticLiquidSupplyUnit> AUTOMATIC_LIQUID_SUPPLY_UNIT = ModuleHelper.register("automatic_liquid_supply_unit", ModuleAutomaticLiquidSupplyUnit::new, builder -> builder.maxStackSize(maxStack("automatic_liquid_supply_unit")).rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("toughasnails")).notEnabled("tooltip.install.tna"));
     //微重力调节单元[移植Gravitational Modulating Additional Unit]
-    public static final ModuleData<ModuleGravitationalModulatingAdditionalUnit> GRAVITATIONAL_MODULATING_ADDITIONAL_UNIT = ModuleHelper.register("gravitational_modulating_additional_unit", ModuleGravitationalModulatingAdditionalUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.RARE));
+    public static final ModuleData<ModuleGravitationalModulatingAdditionalUnit> GRAVITATIONAL_MODULATING_ADDITIONAL_UNIT = ModuleHelper.register("gravitational_modulating_additional_unit", ModuleGravitationalModulatingAdditionalUnit::new, builder -> builder.maxStackSize(maxStack("gravitational_modulating_additional_unit")).rarity(EnumRarity.RARE));
     //能量护盾单元 DR （给meka套提供能量护盾）[最大10个](需要mixin)
-    public static final ModuleData<?> ENERGY_SHIELD_UNIT = ModuleHelper.registerMarker("energy_shield_unit", builder -> builder.maxStackSize(10).rarity(EnumRarity.RARE).canEnable(!Loader.isModLoaded(MekanismHooks.DraconicEvolution_MOD_ID)).notEnabled("tooltip.install.DR"));
+    public static final ModuleData<?> ENERGY_SHIELD_UNIT = ModuleHelper.registerMarker("energy_shield_unit", builder -> builder.maxStackSize(maxStack("energy_shield_unit")).rarity(EnumRarity.RARE).canEnable(!Loader.isModLoaded(MekanismHooks.DraconicEvolution_MOD_ID)).notEnabled("tooltip.install.DR"));
     ///混沌抗性单元 （给meka套提供阻挡混沌伤害的抵抗效果）[最大25个]
-    public static final ModuleData<?> CHAOS_RESISTANCE_UNIT = ModuleHelper.registerMarker("chaos_resistance_unit", builder -> builder.maxStackSize(25).rarity(EnumRarity.EPIC).canEnable(!Loader.isModLoaded(MekanismHooks.DraconicEvolution_MOD_ID)).notEnabled("tooltip.install.DR"));
+    public static final ModuleData<?> CHAOS_RESISTANCE_UNIT = ModuleHelper.registerMarker("chaos_resistance_unit", builder -> builder.maxStackSize(maxStack("chaos_resistance_unit")).rarity(EnumRarity.EPIC).canEnable(!Loader.isModLoaded(MekanismHooks.DraconicEvolution_MOD_ID)).notEnabled("tooltip.install.DR"));
     //混沌旋涡稳定器 DR（当挖掘混沌晶体时，如果玩家附近会产生混沌旋涡，则移除本单元来平息该爆炸）
-    public static final ModuleData<?> PERCENTAGE_DAMAGE_LIMIT_UNIT = ModuleHelper.registerMarker("percentage_damage_limit_unit", builder -> builder.maxStackSize(10).rarity(EnumRarity.EPIC));
-    public static final ModuleData<ModuleChaosVortexStabilizationUnit> CHAOS_VORTEX_STABILIZATION_UNIT = ModuleHelper.register("chaos_vortex_stabilization_unit", ModuleChaosVortexStabilizationUnit::new, builder -> builder.maxStackSize(10).rarity(EnumRarity.RARE).canEnable(!Loader.isModLoaded(MekanismHooks.DraconicEvolution_MOD_ID)).notEnabled("tooltip.install.DR").disabledByDefault());
+    public static final ModuleData<?> PERCENTAGE_DAMAGE_LIMIT_UNIT = ModuleHelper.registerMarker("percentage_damage_limit_unit", builder -> builder.maxStackSize(maxStack("percentage_damage_limit_unit")).rarity(EnumRarity.EPIC));
+    public static final ModuleData<ModuleChaosVortexStabilizationUnit> CHAOS_VORTEX_STABILIZATION_UNIT = ModuleHelper.register("chaos_vortex_stabilization_unit", ModuleChaosVortexStabilizationUnit::new, builder -> builder.maxStackSize(maxStack("chaos_vortex_stabilization_unit")).rarity(EnumRarity.RARE).canEnable(!Loader.isModLoaded(MekanismHooks.DraconicEvolution_MOD_ID)).notEnabled("tooltip.install.DR").disabledByDefault());
     //智能屏蔽单元 冰与火（通过芯片分析，自动屏蔽对方的目光）【需要mixin】
-    public static final ModuleData<?> SMART_SHIELDING_UNIT = ModuleHelper.registerMarker("smart_shielding_unit", builder -> builder.rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("iceandfire")).notEnabled("tooltip.install.IAF"));
+    public static final ModuleData<?> SMART_SHIELDING_UNIT = ModuleHelper.registerMarker("smart_shielding_unit", builder -> builder.maxStackSize(maxStack("smart_shielding_unit")).rarity(EnumRarity.UNCOMMON).canEnable(!Loader.isModLoaded("iceandfire")).notEnabled("tooltip.install.IAF"));
     //无限能量供能单元 （让MekaSuit始终充满能量）【创造物品】
-    public static final ModuleData<ModuleInfiniteEnergySupplyUnit> INFINITE_ENERGY_SUPPLY_UNIT = ModuleHelper.register("infinite_energy_supply_unit", ModuleInfiniteEnergySupplyUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.EPIC));
+    public static final ModuleData<ModuleInfiniteEnergySupplyUnit> INFINITE_ENERGY_SUPPLY_UNIT = ModuleHelper.register("infinite_energy_supply_unit", ModuleInfiniteEnergySupplyUnit::new, builder -> builder.maxStackSize(maxStack("infinite_energy_supply_unit")).rarity(EnumRarity.EPIC));
     //无限拦截救援系统单元 不再受伤【创造物品】
-    public static final ModuleData<ModuleInfiniteInterceptionAndRescueSystemUnit> INFINITE_INTERCEPTION_AND_RESCUE_SYSTEM_UNIT = ModuleHelper.register("infinite_interception_and_rescue_system_unit", ModuleInfiniteInterceptionAndRescueSystemUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.EPIC).noDisable());
+    public static final ModuleData<ModuleInfiniteInterceptionAndRescueSystemUnit> INFINITE_INTERCEPTION_AND_RESCUE_SYSTEM_UNIT = ModuleHelper.register("infinite_interception_and_rescue_system_unit", ModuleInfiniteInterceptionAndRescueSystemUnit::new, builder -> builder.maxStackSize(maxStack("infinite_interception_and_rescue_system_unit")).rarity(EnumRarity.EPIC).noDisable());
     //光环单元
-    public static final ModuleData<ModuleBandofAuraUnit> BAND_OF_AURA_UNIT = ModuleHelper.register("band_of_aura_unit", ModuleBandofAuraUnit::new, builder -> builder.maxStackSize(1).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
+    public static final ModuleData<ModuleBandofAuraUnit> BAND_OF_AURA_UNIT = ModuleHelper.register("band_of_aura_unit", ModuleBandofAuraUnit::new, builder -> builder.maxStackSize(maxStack("band_of_aura_unit")).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
     //基础光环单元
-    public static final ModuleData<ModuleBasicBandofAuraUnit> BASIC_BAND_OF_AURA_UNIT = ModuleHelper.register("basic_band_of_aura_unit", ModuleBasicBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.UNCOMMON).maxStackSize(1).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
+    public static final ModuleData<ModuleBasicBandofAuraUnit> BASIC_BAND_OF_AURA_UNIT = ModuleHelper.register("basic_band_of_aura_unit", ModuleBasicBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.UNCOMMON).maxStackSize(maxStack("basic_band_of_aura_unit")).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
     //高级光环单元
-    public static final ModuleData<ModuleAdvancedBandofAuraUnit> ADVANCED_BAND_OF_AURA_UNIT = ModuleHelper.register("advanced_band_of_aura_unit", ModuleAdvancedBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.UNCOMMON).maxStackSize(1).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
+    public static final ModuleData<ModuleAdvancedBandofAuraUnit> ADVANCED_BAND_OF_AURA_UNIT = ModuleHelper.register("advanced_band_of_aura_unit", ModuleAdvancedBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.UNCOMMON).maxStackSize(maxStack("advanced_band_of_aura_unit")).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
     //精英光环单元
-    public static final ModuleData<ModuleEliteBandofAuraUnit> ELITE_BAND_OF_AURA_UNIT = ModuleHelper.register("elite_band_of_aura_unit", ModuleEliteBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.RARE).maxStackSize(1).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
+    public static final ModuleData<ModuleEliteBandofAuraUnit> ELITE_BAND_OF_AURA_UNIT = ModuleHelper.register("elite_band_of_aura_unit", ModuleEliteBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.RARE).maxStackSize(maxStack("elite_band_of_aura_unit")).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
     //终极光环单元
-    public static final ModuleData<ModuleUltimateBandofAuraUnit> ULTIMATE_BAND_OF_AURA_UNIT = ModuleHelper.register("ultimate_band_of_aura_unit", ModuleUltimateBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.RARE).maxStackSize(1).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
+    public static final ModuleData<ModuleUltimateBandofAuraUnit> ULTIMATE_BAND_OF_AURA_UNIT = ModuleHelper.register("ultimate_band_of_aura_unit", ModuleUltimateBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.RARE).maxStackSize(maxStack("ultimate_band_of_aura_unit")).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
     //创造光环单元【创造物品】
-    public static final ModuleData<ModuleCreativeBandofAuraUnit> CREATIVE_BAND_OF_AURA_UNIT = ModuleHelper.register("creative_band_of_aura_unit", ModuleCreativeBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.EPIC).maxStackSize(1).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
+    public static final ModuleData<ModuleCreativeBandofAuraUnit> CREATIVE_BAND_OF_AURA_UNIT = ModuleHelper.register("creative_band_of_aura_unit", ModuleCreativeBandofAuraUnit::new, builder -> builder.rarity(EnumRarity.EPIC).maxStackSize(maxStack("creative_band_of_aura_unit")).canEnable(!Loader.isModLoaded("botania")).notEnabled("tooltip.install.botania").disabledByDefault());
     //AE智能无线单元 AE
-    public static final ModuleData<ModuleSmartWirelessUnit> SMART_WIRELESS_UNIT = ModuleHelper.register("smart_wireless_unit", ModuleSmartWirelessUnit::new, builder -> builder.rarity(EnumRarity.RARE).canEnable(!Loader.isModLoaded("appliedenergistics2")).notEnabled("tooltip.install.AE2").handlesModeChange().rendersHUD());
+    public static final ModuleData<ModuleSmartWirelessUnit> SMART_WIRELESS_UNIT = ModuleHelper.register("smart_wireless_unit", ModuleSmartWirelessUnit::new, builder -> builder.maxStackSize(maxStack("smart_wireless_unit")).rarity(EnumRarity.RARE).canEnable(!Loader.isModLoaded("appliedenergistics2")).notEnabled("tooltip.install.AE2").handlesModeChange().rendersHUD());
     //无限气体供能单元 （让MekaSuit始终充气体）【创造物品】
-    public static final ModuleData<ModuleInfiniteGasSupplyUnit> INFINITE_GAS_SUPPLY_UNIT = ModuleHelper.register("infinite_gas_supply_unit", ModuleInfiniteGasSupplyUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.EPIC));
+    public static final ModuleData<ModuleInfiniteGasSupplyUnit> INFINITE_GAS_SUPPLY_UNIT = ModuleHelper.register("infinite_gas_supply_unit", ModuleInfiniteGasSupplyUnit::new, builder -> builder.maxStackSize(maxStack("infinite_gas_supply_unit")).rarity(EnumRarity.EPIC));
     //智能范围攻击单元 (WC 挂)
-    public static final ModuleData<ModuleAutomaticAttackUnit> AUTOMATIC_ATTACK_UNIT = ModuleHelper.register("automatic_attack_unit", ModuleAutomaticAttackUnit::new, builder -> builder.maxStackSize(4).rarity(EnumRarity.EPIC));
-    public static final ModuleData<ModuleCounterattackUnit> COUNTERATTACK_UNIT = ModuleHelper.register("counterattack_unit", ModuleCounterattackUnit::new, builder -> builder.maxStackSize(ModuleCounterattackUnit.MAX_MODULES_PER_ARMOR).rarity(EnumRarity.RARE).disabledByDefault());
+    public static final ModuleData<ModuleAutomaticAttackUnit> AUTOMATIC_ATTACK_UNIT = ModuleHelper.register("automatic_attack_unit", ModuleAutomaticAttackUnit::new, builder -> builder.maxStackSize(maxStack("automatic_attack_unit")).rarity(EnumRarity.EPIC));
+    public static final ModuleData<ModuleCounterattackUnit> COUNTERATTACK_UNIT = ModuleHelper.register("counterattack_unit", ModuleCounterattackUnit::new, builder -> builder.maxStackSize(maxStack("counterattack_unit")).rarity(EnumRarity.RARE).disabledByDefault());
     //动力增强单元（增加伤害和攻击速度）
-    public static final ModuleData<ModularPowerEnhancementUnit> POWER_ENHANCEMENT_UNIT = ModuleHelper.register("power_enhancement_unit", ModularPowerEnhancementUnit::new, builder -> builder.maxStackSize(64).rarity(EnumRarity.EPIC));
+    public static final ModuleData<ModularPowerEnhancementUnit> POWER_ENHANCEMENT_UNIT = ModuleHelper.register("power_enhancement_unit", ModularPowerEnhancementUnit::new, builder -> builder.maxStackSize(maxStack("power_enhancement_unit")).rarity(EnumRarity.EPIC));
     //加速冷却单元(加速物品的冷却)
-    public static final ModuleData<ModularHighSpeedCoolingUnit> HIGH_SPEED_COOLING_UNIT = ModuleHelper.register("high_speed_cooling_unit", ModularHighSpeedCoolingUnit::new, builder -> builder.maxStackSize(10).rarity(EnumRarity.EPIC));
+    public static final ModuleData<ModularHighSpeedCoolingUnit> HIGH_SPEED_COOLING_UNIT = ModuleHelper.register("high_speed_cooling_unit", ModularHighSpeedCoolingUnit::new, builder -> builder.maxStackSize(maxStack("high_speed_cooling_unit")).rarity(EnumRarity.EPIC));
     //量子重建单元（可以让玩家穿过方块）
-    public static final ModuleData<ModuleQuantumReconstructionUnit> QUANTUM_RECONSTRUCTION_UNIT = ModuleHelper.register("quantum_reconstruction_unit",ModuleQuantumReconstructionUnit::new,builder -> builder.rarity(EnumRarity.EPIC).handlesModeChange().modeChangeDisabledByDefault().disabledByDefault());
+    public static final ModuleData<ModuleQuantumReconstructionUnit> QUANTUM_RECONSTRUCTION_UNIT = ModuleHelper.register("quantum_reconstruction_unit",ModuleQuantumReconstructionUnit::new,builder -> builder.maxStackSize(maxStack("quantum_reconstruction_unit")).rarity(EnumRarity.EPIC).handlesModeChange().modeChangeDisabledByDefault().disabledByDefault());
     //生命提升单元
-    public static final ModuleData<ModuleHPBootsUnit> HP_BOOTS_UNIT =  ModuleHelper.register("hp_boots_unit", ModuleHPBootsUnit::new, builder -> builder.maxStackSize(64).rarity(EnumRarity.EPIC).noDisable());
+    public static final ModuleData<ModuleHPBootsUnit> HP_BOOTS_UNIT =  ModuleHelper.register("hp_boots_unit", ModuleHPBootsUnit::new, builder -> builder.maxStackSize(maxStack("hp_boots_unit")).rarity(EnumRarity.EPIC).noDisable());
     //光学迷彩单元(可以让生物隐身)
-    public static final ModuleData<ModuleOpticalCamouflageUnit> OPTICAL_CAMOUFLAGE_UNIT = ModuleHelper.register("optical_camouflage_unit", ModuleOpticalCamouflageUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.EPIC).handlesModeChange().modeChangeDisabledByDefault().disabledByDefault());
+    public static final ModuleData<ModuleOpticalCamouflageUnit> OPTICAL_CAMOUFLAGE_UNIT = ModuleHelper.register("optical_camouflage_unit", ModuleOpticalCamouflageUnit::new, builder -> builder.maxStackSize(maxStack("optical_camouflage_unit")).rarity(EnumRarity.EPIC).handlesModeChange().modeChangeDisabledByDefault().disabledByDefault());
     //TODO范围生物显示框(显示范围内的生物，用方框在外面显示【类似于fps中那种外挂中的人物方框】)
 
-    public static final ModuleData<ModuleEntityDisplayBoxUnit> ENTITY_DISPLAY_BOX_UNIT = ModuleHelper.register("entity_display_box_unit", ModuleEntityDisplayBoxUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.RARE).disabledByDefault());
+    public static final ModuleData<ModuleEntityDisplayBoxUnit> ENTITY_DISPLAY_BOX_UNIT = ModuleHelper.register("entity_display_box_unit", ModuleEntityDisplayBoxUnit::new, builder -> builder.maxStackSize(maxStack("entity_display_box_unit")).rarity(EnumRarity.RARE).disabledByDefault());
 
-    public static final ModuleData<ModuleWallClingUnit> WALL_CLING_UNIT = ModuleHelper.register("wall_cling_unit", ModuleWallClingUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.RARE).handlesModeChange().modeChangeDisabledByDefault().disabledByDefault().exclusive(ModuleData.ExclusiveFlag.OVERRIDE_JUMP));
+    public static final ModuleData<ModuleWallClingUnit> WALL_CLING_UNIT = ModuleHelper.register("wall_cling_unit", ModuleWallClingUnit::new, builder -> builder.maxStackSize(maxStack("wall_cling_unit")).rarity(EnumRarity.RARE).handlesModeChange().modeChangeDisabledByDefault().disabledByDefault().exclusive(ModuleData.ExclusiveFlag.OVERRIDE_JUMP));
 
-    public static final ModuleData<ModuleOreVisualEnhancementUnit> ORE_VISUAL_ENHANCEMENT_UNIT = ModuleHelper.register("ore_visual_enhancement_unit", ModuleOreVisualEnhancementUnit::new, builder -> builder.maxStackSize(5).rarity(EnumRarity.RARE).disabledByDefault().rendersHUD());
+    public static final ModuleData<ModuleOreVisualEnhancementUnit> ORE_VISUAL_ENHANCEMENT_UNIT = ModuleHelper.register("ore_visual_enhancement_unit", ModuleOreVisualEnhancementUnit::new, builder -> builder.maxStackSize(maxStack("ore_visual_enhancement_unit")).rarity(EnumRarity.RARE).disabledByDefault().rendersHUD());
 
-    public static final ModuleData<ModuleAutomaticOreMiningUnit> AUTOMATIC_ORE_MINING_UNIT = ModuleHelper.register("automatic_ore_mining_unit", ModuleAutomaticOreMiningUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.RARE).disabledByDefault());
+    public static final ModuleData<ModuleAutomaticOreMiningUnit> AUTOMATIC_ORE_MINING_UNIT = ModuleHelper.register("automatic_ore_mining_unit", ModuleAutomaticOreMiningUnit::new, builder -> builder.maxStackSize(maxStack("automatic_ore_mining_unit")).rarity(EnumRarity.RARE).disabledByDefault());
 
-    public static final ModuleData<ModuleLootingAmplificationUnit> LOOTING_AMPLIFICATION_UNIT = ModuleHelper.register("looting_amplification_unit", ModuleLootingAmplificationUnit::new, builder -> builder.maxStackSize(ModuleLootingAmplificationUnit.getMaxModules()).rarity(EnumRarity.RARE).disabledByDefault());
+    public static final ModuleData<ModuleLootingAmplificationUnit> LOOTING_AMPLIFICATION_UNIT = ModuleHelper.register("looting_amplification_unit", ModuleLootingAmplificationUnit::new, builder -> builder.maxStackSize(maxStack("looting_amplification_unit")).rarity(EnumRarity.RARE).disabledByDefault());
 
-    public static final ModuleData<ModuleKnockbackControlUnit> KNOCKBACK_CONTROL_UNIT = ModuleHelper.register("knockback_control_unit", ModuleKnockbackControlUnit::new, builder -> builder.maxStackSize(ModuleKnockbackControlUnit.MAX_MODULES).rarity(EnumRarity.RARE).disabledByDefault());
+    public static final ModuleData<ModuleKnockbackControlUnit> KNOCKBACK_CONTROL_UNIT = ModuleHelper.register("knockback_control_unit", ModuleKnockbackControlUnit::new, builder -> builder.maxStackSize(maxStack("knockback_control_unit")).rarity(EnumRarity.RARE).disabledByDefault());
 
-    public static final ModuleData<ModuleExecutionUnit> EXECUTION_UNIT = ModuleHelper.register("execution_unit", ModuleExecutionUnit::new, builder -> builder.maxStackSize(ModuleExecutionUnit.MAX_MODULES).rarity(EnumRarity.EPIC).disabledByDefault());
+    public static final ModuleData<ModuleExecutionUnit> EXECUTION_UNIT = ModuleHelper.register("execution_unit", ModuleExecutionUnit::new, builder -> builder.maxStackSize(maxStack("execution_unit")).rarity(EnumRarity.EPIC).disabledByDefault());
 
-    public static final ModuleData<ModuleAutomaticExtinguishUnit> AUTOMATIC_EXTINGUISH_UNIT = ModuleHelper.register("automatic_extinguish_unit", ModuleAutomaticExtinguishUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.UNCOMMON).disabledByDefault());
+    public static final ModuleData<ModuleAutomaticExtinguishUnit> AUTOMATIC_EXTINGUISH_UNIT = ModuleHelper.register("automatic_extinguish_unit", ModuleAutomaticExtinguishUnit::new, builder -> builder.maxStackSize(maxStack("automatic_extinguish_unit")).rarity(EnumRarity.UNCOMMON).disabledByDefault());
 
-    public static final ModuleData<?> SMELTING_UNIT = ModuleHelper.registerMarker("smelting_unit",  builder -> builder.maxStackSize(1).rarity(EnumRarity.RARE).disabledByDefault());
+    public static final ModuleData<?> SMELTING_UNIT = ModuleHelper.registerMarker("smelting_unit",  builder -> builder.maxStackSize(maxStack("smelting_unit")).rarity(EnumRarity.RARE).disabledByDefault());
 
-    public static final ModuleData<ModuleImpactWaveUnit> IMPACT_WAVE_UNIT = ModuleHelper.register("impact_wave_unit", ModuleImpactWaveUnit::new, builder -> builder.maxStackSize(ModuleImpactWaveUnit.MAX_MODULES).rarity(EnumRarity.RARE).disabledByDefault());
+    public static final ModuleData<ModuleImpactWaveUnit> IMPACT_WAVE_UNIT = ModuleHelper.register("impact_wave_unit", ModuleImpactWaveUnit::new, builder -> builder.maxStackSize(maxStack("impact_wave_unit")).rarity(EnumRarity.RARE).disabledByDefault());
 }
