@@ -105,7 +105,7 @@ public class MekaSuitMoreModules {
 
     public static final ModuleData<ModuleAutomaticOreMiningUnit> AUTOMATIC_ORE_MINING_UNIT = ModuleHelper.register("automatic_ore_mining_unit", ModuleAutomaticOreMiningUnit::new, builder -> builder.maxStackSize(1).rarity(EnumRarity.RARE).disabledByDefault());
 
-    public static final ModuleData<ModuleLootingAmplificationUnit> LOOTING_AMPLIFICATION_UNIT = ModuleHelper.register("looting_amplification_unit", ModuleLootingAmplificationUnit::new, builder -> builder.maxStackSize(ModuleLootingAmplificationUnit.MAX_MODULES).rarity(EnumRarity.RARE).disabledByDefault());
+    public static final ModuleData<ModuleLootingAmplificationUnit> LOOTING_AMPLIFICATION_UNIT = ModuleHelper.register("looting_amplification_unit", ModuleLootingAmplificationUnit::new, builder -> builder.maxStackSize(ModuleLootingAmplificationUnit.getMaxModules()).rarity(EnumRarity.RARE).disabledByDefault());
 
     public static final ModuleData<ModuleKnockbackControlUnit> KNOCKBACK_CONTROL_UNIT = ModuleHelper.register("knockback_control_unit", ModuleKnockbackControlUnit::new, builder -> builder.maxStackSize(ModuleKnockbackControlUnit.MAX_MODULES).rarity(EnumRarity.RARE).disabledByDefault());
 

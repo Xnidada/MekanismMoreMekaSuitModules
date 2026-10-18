@@ -8,15 +8,18 @@ import mekanism.api.gear.config.ModuleConfigItemCreator;
 import mekanism.api.gear.config.ModuleEnumData;
 import mekanism.api.text.IHasTextComponent;
 import mekanism.api.text.TextComponentGroup;
+import moremekasuitmodules.common.config.MoreModulesConfig;
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.gmut.MoreMekaSuitModulesLang;
 import net.minecraft.util.text.ITextComponent;
 
 @ParametersAreNotNullByDefault
 public class ModuleLootingAmplificationUnit implements ICustomModule<ModuleLootingAmplificationUnit> {
 
-    public static final int MAX_MODULES = 10;
-
     private IModuleConfigItem<LootingLevel> lootingLevel;
+
+    public static int getMaxModules() {
+        return MoreModulesConfig.current().config.mekaToolLootingAmplificationMaxModules.val();
+    }
 
     @Override
     public void init(IModule<ModuleLootingAmplificationUnit> module, ModuleConfigItemCreator configItemCreator) {
@@ -26,7 +29,7 @@ public class ModuleLootingAmplificationUnit implements ICustomModule<ModuleLooti
     }
 
     public int getEffectiveLevel(int installedCount) {
-        return Math.min(Math.min(installedCount, MAX_MODULES), lootingLevel.get().getLevel());
+        return Math.min(Math.min(installedCount, getMaxModules()), lootingLevel.get().getLevel());
     }
 
     public enum LootingLevel implements IHasTextComponent {

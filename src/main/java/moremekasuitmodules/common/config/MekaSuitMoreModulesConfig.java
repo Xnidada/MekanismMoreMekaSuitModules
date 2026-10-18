@@ -21,6 +21,7 @@ public class MekaSuitMoreModulesConfig extends BaseConfig {
     public final BooleanOption TCAspectRecipes = new BooleanOption(this,  "TCAspectRecipes", true, "Let default Thaumcraft recipes add the elements synthesized from both types of elements into the recipe.");
     public DoubleOption mekaSuitEnergyUsageItemAttack = new DoubleOption(this, "energyUsageItemattack", 200, "Energy cost per tick attacking entity");
     public IntOption MekAsuitAutoAttackMax = new IntOption(this,"MekAsuitAutoAttackMax",20,"",1,Integer.MAX_VALUE);
+    public IntOption mekaToolLootingAmplificationMaxModules = new IntOption(this, "maxLootingAmplificationModules", 10, "Maximum number of looting amplification units that can be installed", 1, Integer.MAX_VALUE).setRequiresGameRestart();
     public DoubleOption mekaToolEnergyUsageLootingAmplification = new DoubleOption(this, "energyUsageLootingAmplification", 500, "Energy cost per effective looting level");
     public DoubleOption mekaToolEnergyUsageKnockbackControl = new DoubleOption(this, "energyUsageKnockbackControl", 250, "Energy cost per knockback strength");
     public DoubleOption mekaToolEnergyUsageExecution = new DoubleOption(this, "energyUsageExecution", 1000, "Energy cost per installed execution unit");
