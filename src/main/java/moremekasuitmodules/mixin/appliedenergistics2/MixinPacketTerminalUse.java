@@ -34,7 +34,7 @@ public abstract class MixinPacketTerminalUse extends AppEngPacket {
     @Shadow(remap = false)
     Terminal terminal;
 
-    @Inject(method = "serverPacketData", at = @At(value = "HEAD"), remap = false)
+    @Inject(method = "serverPacketData", at = @At(value = "HEAD"), remap = false, cancellable = true)
     public void serverPacketData(INetworkInfo manager, AppEngPacket packet, EntityPlayer player, CallbackInfo ci) {
         NonNullList<ItemStack> armor = player.inventory.armorInventory;
         for (int i = 0; i < armor.size(); i++) {
@@ -49,6 +49,9 @@ public abstract class MixinPacketTerminalUse extends AppEngPacket {
                             module.getCustomInstance().changeMode(mode.ordinal());
                         }
                         openGui(ar, 36 + i, player, false);
+                        //头盔已经接管本次终端请求，必须阻止AE2继续处理原始无线终端物品。
+                        //否则界面虽然可能已打开，但后续网络操作仍会从手持终端扣除AE能量。
+                        ci.cancel();
                         return;
                     }
                 }
