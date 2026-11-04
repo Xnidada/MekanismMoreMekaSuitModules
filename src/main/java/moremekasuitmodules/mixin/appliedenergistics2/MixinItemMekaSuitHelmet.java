@@ -77,17 +77,19 @@ public abstract class MixinItemMekaSuitHelmet extends ItemMekaSuitArmor implemen
 
     @Override
     public boolean usePower(EntityPlayer entityPlayer, double amount, ItemStack itemStack) {
-        if (!isWirelessTerminalActive(entityPlayer, itemStack)
-                || StorageUtils.extractEnergy(itemStack, amount, Action.SIMULATE) < amount) {
+        ItemStack helmet = entityPlayer.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+        if (!isWirelessTerminalActive(entityPlayer, helmet)
+                || StorageUtils.extractEnergy(helmet, amount, Action.SIMULATE) < amount) {
             return false;
         }
-        return StorageUtils.extractEnergy(itemStack, amount, Action.EXECUTE) >= amount;
+        return StorageUtils.extractEnergy(helmet, amount, Action.EXECUTE) >= amount;
     }
 
     @Override
     public boolean hasPower(EntityPlayer entityPlayer, double amount, ItemStack itemStack) {
-        return isWirelessTerminalActive(entityPlayer, itemStack)
-                && StorageUtils.extractEnergy(itemStack, amount, Action.SIMULATE) >= amount;
+        ItemStack helmet = entityPlayer.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+        return isWirelessTerminalActive(entityPlayer, helmet)
+                && StorageUtils.extractEnergy(helmet, amount, Action.SIMULATE) >= amount;
     }
 
     @Unique
