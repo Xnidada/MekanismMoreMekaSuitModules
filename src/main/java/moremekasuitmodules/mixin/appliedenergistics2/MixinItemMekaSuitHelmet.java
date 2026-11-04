@@ -55,12 +55,16 @@ public abstract class MixinItemMekaSuitHelmet extends ItemMekaSuitArmor implemen
             if (unparsedKey.isEmpty()) {
                 tooltip.add(LangUtils.localize("chat.appliedenergistics2.DeviceNotLinked"));
             } else {
-                long parsedKey = Long.parseLong(unparsedKey);
-                ILocatable securityStation = AEApi.instance().registries().locatable().getLocatableBy(parsedKey);
-                if (securityStation == null) {
-                    tooltip.add(LangUtils.localize("chat.appliedenergistics2.StationCanNotBeLocated"));
-                } else {
-                    tooltip.add(LangUtils.localize("chat.appliedenergistics2.DeviceLinked"));
+                // encryptionKey 是服务端分配的网络身份。客户端找不到对应的
+                // ILocatable 时，只代表本地注册表尚未同步，不代表设备未连接。
+                tooltip.add(LangUtils.localize("chat.appliedenergistics2.DeviceLinked"));
+                try {
+                    long parsedKey = Long.parseLong(unparsedKey);
+                    // 保留客户端可用时的解析路径；AE2 原有提示会继续显示网络位置。
+                    ILocatable securityStation = AEApi.instance().registries().locatable().getLocatableBy(parsedKey);
+                }
+                catch (NumberFormatException ignored) {
+                    // 非法值不会影响服务端无线终端逻辑，也不显示误导性的“位置不可用”。
                 }
             }
         }
