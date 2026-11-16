@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class CounterattackHandler {
 
     public static final String COUNTERATTACK_DAMAGE_NAME = "counterattack";
+    private static final float MAX_COUNTERATTACK_DAMAGE = 150.0F;
     // MekanismDamageSource 会自动加上 mekanism. 前缀，实际伤害类型为 mekanism.counterattack。
     public static final MekanismDamageSource COUNTERATTACKDAMAGE = new MekanismDamageSource(COUNTERATTACK_DAMAGE_NAME).setMagicDamage();
     private static final String COUNTERATTACK_DAMAGE_TYPE = COUNTERATTACKDAMAGE.getDamageType();
@@ -51,9 +52,10 @@ public class CounterattackHandler {
             return;
         }
 
-        // 反击伤害 = 入场伤害 × 四件护甲有效单元总数 ÷ 10。
-        // Counter damage = incoming damage × effective units on four armor pieces ÷ 10.
-        float counterDamage = event.getAmount() * counterModules / ModuleCounterattackUnit.DAMAGE_DIVISOR;
+        // 反击伤害 = 入场伤害 × 四件护甲有效单元总数 ÷ 10，最高 150 点。
+        // Counter damage = incoming damage × effective units on four armor pieces ÷ 10, capped at 150.
+        float counterDamage = Math.min(MAX_COUNTERATTACK_DAMAGE,
+                event.getAmount() * counterModules / ModuleCounterattackUnit.DAMAGE_DIVISOR);
         if (counterDamage > 0.0F) {
             if (attacker.attackEntityFrom(COUNTERATTACKDAMAGE.setTrueSource(defender), counterDamage)) {
                 MekaLightningEffectHelper.renderEntityImpact(attacker, defender.ticksExisted);

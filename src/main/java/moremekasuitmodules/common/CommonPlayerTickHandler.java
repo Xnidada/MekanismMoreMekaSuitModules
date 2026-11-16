@@ -295,6 +295,7 @@ public class CommonPlayerTickHandler {
     public static final Set<String> CHAOS_DAMAGE_NAMES = Sets.newHashSet(
             "de.GuardianFireball", "de.GuardianEnergyBall", "de.GuardianChaosBall",
             "chaosImplosion", "damage.de.fusionExplode", "de.islandImplode");
+    private static final float CHAOS_RESISTANCE_PER_UNIT = 0.006F;
 
     @SubscribeEvent //这个事件用于计算是否可以完全取消混沌伤害
     @Optional.Method(modid = MekanismHooks.DraconicEvolution_MOD_ID)
@@ -311,7 +312,7 @@ public class CommonPlayerTickHandler {
                 }
             }
             if (totalLevel > 0) {
-                float newDamage = event.getAmount() * (1F - (totalLevel * 0.01F));
+                float newDamage = event.getAmount() * (1F - (totalLevel * CHAOS_RESISTANCE_PER_UNIT));
                 if (newDamage <= 0F) {
                     event.setCanceled(true);
                 }
@@ -334,7 +335,7 @@ public class CommonPlayerTickHandler {
                 }
             }
             if (totalLevel > 0) {
-                float newDamage = event.getAmount() * (1F - (totalLevel * 0.01F));
+                float newDamage = event.getAmount() * (1F - (totalLevel * CHAOS_RESISTANCE_PER_UNIT));
                 if (newDamage > 0F) {
                     event.setAmount(newDamage);
                 } else {

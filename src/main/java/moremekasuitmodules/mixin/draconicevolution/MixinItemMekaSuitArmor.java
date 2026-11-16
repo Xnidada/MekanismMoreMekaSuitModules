@@ -14,9 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -30,9 +28,19 @@ public abstract class MixinItemMekaSuitArmor extends ItemArmor implements IEnerg
     }
 
 
-    @Shadow
-    @Final
-    private float absorption;
+    private float getShieldMultiplier() {
+        switch (armorType) {
+            case HEAD:
+            case FEET:
+                return 0.05F;
+            case CHEST:
+                return 0.30F;
+            case LEGS:
+                return 0.20F;
+            default:
+                return 0.0F;
+        }
+    }
 
     @Inject(method = "addALLItemStack", at = @At("HEAD"))
     public void addallItem(ItemStack stack, CallbackInfo ci) {
@@ -46,9 +54,9 @@ public abstract class MixinItemMekaSuitArmor extends ItemArmor implements IEnerg
             int upgradeLevel = module.getInstalledCount();
             if (module.isEnabled()) {
                 if (MoreModulesConfig.current().config.mekaSuitShield.val()) {
-                    return MoreModulesConfig.current().config.mekaSuitShieldCapacity.val() * absorption * (int) Math.pow(2, upgradeLevel);
+                    return MoreModulesConfig.current().config.mekaSuitShieldCapacity.val() * getShieldMultiplier() * (int) Math.pow(2, upgradeLevel);
                 } else {
-                    return MoreModulesConfig.current().config.mekaSuitShieldCapacity.val() * absorption * upgradeLevel;
+                    return MoreModulesConfig.current().config.mekaSuitShieldCapacity.val() * getShieldMultiplier() * upgradeLevel;
                 }
             } else {
                 return ItemNBTHelper.getFloat(stack, "ProtectionPoints", 0);

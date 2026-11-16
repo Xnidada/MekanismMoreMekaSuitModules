@@ -52,7 +52,7 @@ public class MekaSuitMoreModulesConfig extends BaseConfig {
         registerModuleMax("automatic_liquid_supply_unit", 1, "数量仅限制安装上限；自动供液为开关效果 / Count only limits installation; automatic supply is a toggle effect");
         registerModuleMax("gravitational_modulating_additional_unit", 1, "数量仅限制安装上限；具体功能由模式配置决定 / Count only limits installation; behavior is controlled by mode settings");
         registerModuleMax("energy_shield_unit", 10, "护盾强度按已安装数量参与计算 / Shield strength scales with installed count");
-        registerModuleMax("chaos_resistance_unit", 25, "混沌抗性=有效单元数量% / Chaos resistance equals effective unit count percent");
+        registerModuleMax("chaos_resistance_unit", 25, "混沌抗性=有效单元数量×0.6% / Chaos resistance equals effective unit count × 0.6%");
         registerModuleMax("percentage_damage_limit_unit", 10, "总数量<4M时伤害倍率=1-总数量/(4M)，达到4M后每次最多受1点伤害；M为每件护甲上限 / Below 4M, damage multiplier=1-total count/(4M); at 4M, each hit is limited to 1 damage; M is the per-armor cap");
         registerModuleMax("chaos_vortex_stabilization_unit", 10, "每平息1个混沌旋涡消耗1个单元 / Quelling one chaos vortex consumes one unit");
         registerModuleMax("smart_shielding_unit", 1, "数量仅限制安装上限；屏蔽目光为开关效果 / Count only limits installation; gaze shielding is a toggle effect");

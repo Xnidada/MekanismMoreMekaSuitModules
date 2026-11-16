@@ -144,7 +144,7 @@ public class EntityDisplayBoxRenderer {
         if (target == null || target == player || !target.isEntityAlive()) {
             return false;
         }
-        if (target instanceof EntityPlayer && ((EntityPlayer) target).isSpectator()) {
+        if (target instanceof EntityPlayer && (((EntityPlayer) target).isSpectator() || target.isInvisible())) {
             return false;
         }
         return player.getDistanceSq(target) <= radiusSq;
