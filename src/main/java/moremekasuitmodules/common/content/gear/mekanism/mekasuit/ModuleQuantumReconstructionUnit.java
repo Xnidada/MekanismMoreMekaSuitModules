@@ -3,6 +3,7 @@ package moremekasuitmodules.common.content.gear.mekanism.mekasuit;
 import mekanism.api.gear.ICustomModule;
 import mekanism.api.gear.IModule;
 import mekanism.common.config.MekanismConfig;
+import moremekasuitmodules.common.config.MoreModulesConfig;
 import moremekasuitmodules.common.content.gear.mekanism.mekasuit.gmut.MoreMekaSuitModulesLang;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,8 @@ public class ModuleQuantumReconstructionUnit implements ICustomModule<ModuleQuan
 
     @Override
     public void tickServer(IModule<ModuleQuantumReconstructionUnit> module, EntityPlayer player) {
-        player.noClip = module.isEnabled() && player.isEntityAlive() && !player.onGround;
+        player.noClip = module.isEnabled() && player.isEntityAlive() && !player.onGround
+                && !MoreModulesConfig.current().config.quantumReconstructionDisabledDimensions.val().contains(player.dimension);
     }
 
     @Nullable

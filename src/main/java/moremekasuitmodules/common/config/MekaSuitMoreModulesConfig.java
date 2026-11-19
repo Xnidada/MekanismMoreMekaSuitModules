@@ -5,6 +5,7 @@ import mekanism.common.config.options.BooleanOption;
 import mekanism.common.config.options.DoubleOption;
 import mekanism.common.config.options.FloatOption;
 import mekanism.common.config.options.IntOption;
+import mekanism.common.config.options.IntSetOption;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class MekaSuitMoreModulesConfig extends BaseConfig {
     public DoubleOption mekaSuitEnergyUsageImpactWave = new DoubleOption(this, "energyUsageImpactWave", 350, "冲击波每个半径方块的能量消耗 / Energy cost per impact wave radius block");
     public IntOption mekaSuitOxygenCapacity = new IntOption(this, "mekaSuitOxygenCapacity", 24000, "MekaSuit 头盔氧气供应单元的氧气容量 / Oxygen capacity for the MekaSuit helmet oxygen supply unit", 0, Integer.MAX_VALUE);
     public IntOption mekaSuitOxygenUsage = new IntOption(this, "mekaSuitOxygenUsage", 1, "启用氧气供应单元时每 tick 消耗的氧气 / Oxygen consumed per tick while the oxygen supply unit is enabled", 0, Integer.MAX_VALUE);
+    public IntSetOption quantumReconstructionDisabledDimensions = new IntSetOption(this, "quantumReconstructionDisabledDimensions", new int[]{7, -12, 14676, 5, 1088, 181}, "量子重构单元失效的维度 / Dimensions where the quantum reconstruction unit is disabled");
 
     private final Map<String, IntOption> moduleMaxModules = new LinkedHashMap<>();
 
