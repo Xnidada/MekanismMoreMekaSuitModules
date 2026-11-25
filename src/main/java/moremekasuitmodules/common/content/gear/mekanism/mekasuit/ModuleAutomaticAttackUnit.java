@@ -111,7 +111,8 @@ public class ModuleAutomaticAttackUnit implements ICustomModule<ModuleAutomaticA
         }
 
         if (target instanceof EntityPlayer) {
-            return attackPlayer.get() && !(target instanceof FakePlayer) && !target.equals(player);
+            // Player targets are intentionally unsupported by this module.
+            return false;
         }
         if (attackHostile.get() && target instanceof IMob) {
             return true;
